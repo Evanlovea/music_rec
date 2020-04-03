@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.haut.music.dao.PersonalRecDao">
+
+	<select id="selectPersonalRecFromA" parameterType="com.haut.music.model.User"
+		resultType="com.haut.music.model.Song">
+		select * from reca,song
+		where reca.userId=#{userId} and reca.songId=song.songId
+	</select>
+	
+	<select id="selectPersonalRecFromB" parameterType="com.haut.music.model.User"
+		resultType="com.haut.music.model.Song">
+		select * from recb,song
+		where recb.userId=#{userId} and recb.songId=song.songId
+	</select>
+	
+	<insert id="insertRecA" parameterType="int">
+		insert into reca(userId,songId) values(#{0},#{1})
+	</insert>
+	
+	<insert id="insertRecB" parameterType="int">
+		insert into recb(userId,songId) values(#{0},#{1})
+	</insert>
+	
+	<delete id="deleteBByUserId" parameterType="int">
+		delete from recb where userId=#{userId}
+	</delete>
+	
+	<delete id="deleteAByUserId" parameterType="int">
+		delete from reca where userId=#{userId}
+	</delete>
+	
+	
+	<!-- 多个不同类型的传参，会被MyBatis自动解析成param1，param2...
+	https://blog.csdn.net/woshi74/article/details/38397807
+	 -->
+	<insert id="insertListIntoRecA">
+		insert into reca(userId,songId) values
+		<foreach collection="param1" item="song" open="" close="" separator=",">  
+           (#{param2},#{song.songId})
+        </foreach>
+	</insert>
+	
+	<insert id="insertListIntoRecB">
+		insert into recb(userId,songId) values
+		<foreach collection="param1" item="song" open="" close="" separator=",">  
+           (#{param2},#{song.songId})
+        </foreach>
+	</insert>
+	
+	<insert id="insertArrayIntoRecB">
+		insert into recb(userId,songId) values
+		<foreach collection="param1" item="songId" open="" close="" separator=",">  
+           (#{param2},#{songId})
+        </foreach>
+	</insert>
+	
+	<insert id="insertArrayIntoRecA">
+		insert into reca(userId,songId) values
+		<foreach collection="param1" item="songId" open="" close="" separator=",">  
+           (#{param2},#{songId})
+        </foreach>
+	</insert>
+	
+	
+	
+
+</mapper>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.haut.music.dao.TrendingRecDao">
+
+	<!-- 这里的trending为视图,返回歌曲的id和其对应的流行系数
+	create view trending as 
+	select songId,count(songId) as trendingCoefficient 
+	from play group by songId limit 50;
+	 -->
+	<select id="getTrendingSong"
+		resultType="com.haut.music.model.Song">
+		select * from trending,song
+		where trending.songId=song.songId order by trendingCoefficient desc
+	</select>
+	
+	<select id="getCollection" parameterType="com.haut.music.model.User"
+		resultType="com.haut.music.model.Collection">
+		select * from collection where userId=#{userId}
+	</select>
+	
+
+</mapper>

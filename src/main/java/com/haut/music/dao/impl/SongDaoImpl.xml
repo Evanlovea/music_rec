@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.haut.music.dao.SongDao">
+
+	
+	<select id="selectAllSongId"
+		resultType="Integer">
+		select songId from song
+	</select>
+	
+	<select id="selectSongById" parameterType="int"
+		resultType="com.haut.music.model.Song">
+		select * from song where songId = #{songId}
+	</select>
+	
+	<select id="selectCoefficientById" parameterType="int"
+		resultType="int">
+		select count(songId) as trendingCoefficient from play 
+		where songId = #{songId} 
+	</select>
+	
+	<!-- 
+	传递单个参数的批量删除：
+		（1）参数为array类型：collection=”array“
+		（2）参数为list类型：collection=”list“
+		https://blog.csdn.net/javaee_sunny/article/details/52511842
+	 -->
+	<delete id="deleteByIds" parameterType="int">
+		delete from song where songId in 
+		<foreach collection="array" item="songId" open="(" close=")" separator=",">  
+           #{songId}
+        </foreach>
+	</delete>
+	
+	<insert id="insertOnlySong" parameterType="com.haut.music.model.Song">
+		insert into song(songName,songAddress) values( #{songName},#{songAddress} )
+	</insert>
+	
+	<insert id="insertSongWithLyric" parameterType="com.haut.music.model.Song">
+		insert into song(songName,songAddress,lyricName,lyricAddress) 
+		values( #{songName},#{songAddress},#{lyricName} ,#{lyricAddress} )
+	</insert>
+	
+	<select id="selectAllSongsWithLyric" 
+		resultType="com.haut.music.model.Song">
+		select * from song where lyricAddress is not null
+	</select>
+
+</mapper>

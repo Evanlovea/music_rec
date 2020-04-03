@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.haut.music.dao.UserDao">
+
+	<select id="selectByUser" parameterType="com.haut.music.model.User"
+		resultType="com.haut.music.model.User">
+		select * from user where email=#{email} and
+		password=#{password}
+	</select>
+	
+	<select id="selectByEmail" parameterType="String"
+		resultType="com.haut.music.model.User">
+		select * from user where email=#{email}
+	</select>
+	
+	<insert id="insert" parameterType="com.haut.music.model.User">
+		insert into user(email,password) select #{email},#{password}
+		from dual where #{email} not in (select email from user)
+	</insert>
+	
+	<select id="selectAll"
+		resultType="com.haut.music.model.User">
+		select * from user
+	</select>
+	
+	<select id="selectAllUserId"
+		resultType="Integer">
+		select userId from user
+	</select>
+	
+	<!-- 
+	传递单个参数的批量删除：
+		（1）参数为array类型：collection=”array“
+		（2）参数为list类型：collection=”list“
+		https://blog.csdn.net/javaee_sunny/article/details/52511842
+	 -->
+	<delete id="deleteByIds" parameterType="int">
+		delete from user where userId in 
+		<foreach collection="array" item="userId" open="(" close=")" separator=",">  
+           #{userId}
+        </foreach>
+	</delete>
+	
+	<select id="selectRoleByUserId" parameterType="int" 
+		resultType="com.haut.music.model.Role">
+		select * from role 
+		where roleId in (select roleId from userrole where userId =#{userId} )
+	</select>
+	
+
+</mapper>
