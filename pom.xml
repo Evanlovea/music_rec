@@ -91,7 +91,7 @@
     <slf4j.version>1.7.25</slf4j.version>
     <jackson.version>1.9.13</jackson.version>
     <commons-fileupload.version>1.3.3</commons-fileupload.version>
-    <commons-io.version>2.5</commons-io.version>
+    <commons-io.version>2.7</commons-io.version>
     <commons-codec.version>1.10</commons-codec.version>
     <aspectjweaver.version>1.8.10</aspectjweaver.version>
   </properties>
